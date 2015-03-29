@@ -20,6 +20,11 @@ public class Game : MonoBehaviour {
 	protected const int LOSE = -1;
 	protected const int DRAW = 0;
 
+    private int player1WinCount = 0;
+    private int player2WinCount = 0;
+
+    protected Opponent opponent;
+
 	// Use this for initialization
 	void Start () {
 		//no auto-focus
@@ -28,8 +33,10 @@ public class Game : MonoBehaviour {
 		//start time
 		startTime = Time.time;
 
-		StartCoroutine(CalculateWinCondition(10.0f));
-        
+        opponent = gameObject.GetComponent<Opponent>();
+
+        StartCoroutine(StartRound(3));
+
 		//flashlight on
 		CameraDevice.Instance.SetFlashTorchMode(true);
 
@@ -56,17 +63,25 @@ public class Game : MonoBehaviour {
 
     IEnumerator CalculateWinCondition(float Time)
     {
-        Wand wandComponent = wand.GetComponent<Wand>(); 
+
+        Debug.Log("GameManager : Calculating Win Conditions in " + Time);
+        yield return new WaitForSeconds(Time);
+
+        Wand wandComponent = wand.GetComponent<Wand>();
 
         string player1String = wandComponent.GetSpell();
 
-		Opponent opponent = gameObject.GetComponent<Opponent>();
-		opponent.Send(player1String);
 
-        //TODO: Get PlayerString from the bluetooth data we received.
+        //Get PlayerString from the bluetooth data we received.
+
+        Debug.Log("GameManager: Waiting to receive Data from player");
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("GameManager: Received Data from player");
+        
+       // string player2String = opponent.Receive();
+
         string player2String = "B";
-
-        yield return new WaitForSeconds(Time);
+        wandComponent.bStartDuel = false;
 
 
 		string player1SpellType = SpellType(player1String);
@@ -84,6 +99,35 @@ public class Game : MonoBehaviour {
             //Insert Draw Screen Here
             Debug.Log("Draw");
 		}
+        
+        if(player1WinCount != 3  && player2WinCount != 3)
+        {
+            // Insert Draw Screen here
+            Debug.Log("GameOver");
+        }
+        else
+        {
+            //Get Ready for the next round;
+            StartCoroutine(StartRound(3));
+        }
+        StartCoroutine(StartRound(3));
+    }
+
+    IEnumerator StartRound(int startTime)
+    {
+        while(startTime > 0)
+        {
+            Debug.Log("GameManager: Starting Round in " + startTime + "seconds!!");
+            yield return new WaitForSeconds(1);
+            startTime--;
+        }
+
+        Debug.Log("GameManager: Duel Start");
+        //Set Start Duel Timer here
+        Wand wand = FindObjectOfType<Wand>();
+        wand.bStartDuel = true;
+
+        StartCoroutine(CalculateWinCondition(3));
     }
 
 	//which of the three spell types is this?

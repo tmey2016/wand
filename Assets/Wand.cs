@@ -21,7 +21,7 @@ public class Wand : MonoBehaviour {
 
     List<string> spellList = new List<string>();
 
-    private bool bStartDuel = false;
+    public bool bStartDuel = false;
 
     void Start()
     {
@@ -34,7 +34,7 @@ public class Wand : MonoBehaviour {
         spellList.Clear();
 
         //InvokeRepeating("WaitForPrint", 0.0f, 10.0f);
-        StartRoundTimer(3);
+        //StartRoundTimer(3);
         
 
     }
