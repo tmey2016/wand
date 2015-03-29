@@ -79,12 +79,12 @@ public class Game : MonoBehaviour {
 
     IEnumerator CalculateWinCondition(float Time)
     {
-
+		
 		GetReady.SetActive (false);
         Log("GameManager : Calculating Win Conditions in " + Time);
         //yield return new WaitForSeconds(Time);
 
-		UpdatePlayerBars ();
+
 
 		while (Time > 0) 
 		{
@@ -141,19 +141,18 @@ public class Game : MonoBehaviour {
 		if (loseDrawWin == WIN) {
             // Insert Win Screen here
             Log("You Won the Duel");
-			player1WinCount--;
+			player2WinCount--;
 		} else if (loseDrawWin == LOSE) {
             // Insert Lose Screen here
             Log("You Lost the Duel");
-			player2WinCount--;
+			player1WinCount--;
 
 		} else {
             //Insert Draw Screen Here
             Log("Draw");
-		}
-        
-		;
+		};
 
+		UpdatePlayerBars ();
 		ShowResult (loseDrawWin);
 
 		yield return new WaitForSeconds (3);
@@ -292,7 +291,7 @@ public class Game : MonoBehaviour {
 			if( n < player2WinCount)
 				player2Bar.transform.GetChild(n).gameObject.SetActive(true);
 			else
-				player1Bar.transform.GetChild(n).gameObject.SetActive(false);
+				player2Bar.transform.GetChild(n).gameObject.SetActive(false);
 		}
 	}
 }
