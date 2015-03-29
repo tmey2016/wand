@@ -19,8 +19,25 @@ public class SpawnProj : MonoBehaviour
 		Vector3 destination = Camera.main.ViewportToWorldPoint(viewportDestination);
 		Vector3 projPath = destination - spawnPosition.position;
 		lockTarget.GetComponent<ImageTargetBehaviour> ().enabled = false;
-		projSpawn.rigidbody.AddForce ((projPath/projPath.magnitude) * -20000);
+		projSpawn.rigidbody.AddForce ((projPath/projPath.magnitude) * -40000);
+		Destroy (projSpawn, 2.0f);
 	}
+
+	public void FireLoseProjectile()
+	{
+		GameObject projSpawn = Instantiate (projectile, spawnPosition.position, Quaternion.identity) as GameObject;
+		Vector3 destination = Camera.main.ViewportToWorldPoint(viewportDestination);
+		Vector3 projPath = destination - spawnPosition.position;
+		lockTarget.GetComponent<ImageTargetBehaviour> ().enabled = false;
+		projSpawn.rigidbody.AddForce ((projPath/projPath.magnitude) * 40000);
+		Destroy (projSpawn, 2.0f);
+	}
+
+	public void UnlockWand()
+	{
+		lockTarget.GetComponent<ImageTargetBehaviour> ().enabled = true;
+	}
+
 	void Update()
 	{
 

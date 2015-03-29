@@ -40,6 +40,14 @@ public class Game : MonoBehaviour {
 	public GameObject player1Bar;
 	public GameObject player2Bar;
 
+	public GameObject P1Win;
+	public GameObject P2Win;
+	public GameObject triangle;
+	public GameObject life1;
+	public GameObject life2;
+	public GameObject BackToMain;
+
+
 	// Use this for initialization
 	void Start () {
 		//no auto-focus
@@ -79,7 +87,7 @@ public class Game : MonoBehaviour {
 
     IEnumerator CalculateWinCondition(float Time)
     {
-		
+		UpdatePlayerBars ();
 		GetReady.SetActive (false);
         Log("GameManager : Calculating Win Conditions in " + Time);
         //yield return new WaitForSeconds(Time);
@@ -109,7 +117,9 @@ public class Game : MonoBehaviour {
 		Log("Sent message: " + player1String);
 		SetCountDown (0);
         Log("GameManager: Waiting to receive Data from player");
-        yield return new WaitForSeconds(0.5f);
+
+        yield return new WaitForSeconds(1.0f);
+
         Log("GameManager: Received Data from player");
         
         string player2String = opponent.Receive();
@@ -129,7 +139,6 @@ public class Game : MonoBehaviour {
 			//special power from another player
 			Log ("TODO: Special Attack");
 		}
-
 
 		string player1SpellType = SpellType(player1String);
 		string player2SpellType = SpellType(player2String);
@@ -155,17 +164,41 @@ public class Game : MonoBehaviour {
 		UpdatePlayerBars ();
 		ShowResult (loseDrawWin);
 
+		SpawnProj spawnProj = wand.GetComponent<SpawnProj>();
+		if (loseDrawWin == WIN) 
+		{
+			spawnProj.FireProjectile ();
+		} 
+		else if (loseDrawWin == LOSE) 
+		{
+			spawnProj.FireLoseProjectile ();
+		}
+
 		yield return new WaitForSeconds (3);
 
 		ShowResult (-2);
 
+		spawnProj.UnlockWand ();
+
 		wandComponent.Reset();
 
-        if(player1WinCount == 0  || player2WinCount == 0)
-        {
-            // Insert Draw Screen here
-            Log("GameOver");
-        }
+        if (player1WinCount == 0) 
+		{
+			P2Win.SetActive(true);
+			triangle.SetActive (false);
+			life1.SetActive (false);
+			life2.SetActive (false);
+			BackToMain.SetActive(true);
+
+		} 
+		else if (player2WinCount == 0) 
+		{
+			P1Win.SetActive(true);
+			triangle.SetActive (false);
+			life1.SetActive (false);
+			life2.SetActive (false);
+			BackToMain.SetActive(true);
+		}
         else
         {
             //Get Ready for the next round;

@@ -33,7 +33,7 @@ public class Wand : MonoBehaviour {
     {
         currentSpell = WandSpellState.StateInvalid;
 
-        SpellA = new Vector3(0.5f, 1.0f, 0.0f);
+        SpellA = new Vector3(0.5f, 0.866f, 0.0f);
         SpellB = new Vector3(1.0f, 0.0f, 0.0f);
         SpellC = new Vector3(0.0f, 0.0f, 0.0f);
 
