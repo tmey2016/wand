@@ -34,6 +34,7 @@ namespace Vuforia.EditorClasses
 // not sure if Unity 4.7+ will ever exist, but better safe than sorry
 #if UNITY_5_0 || UNITY_4_9 || UNITY_4_8 || UNITY_4_7 || (UNITY_4_6 && !UNITY_4_6_1 && !UNITY_4_6_2)
                     // check if Graphics API for iOS is set to Metal or Universal
+					#if UNITY_IPHONE
                     if ((PlayerSettings.targetIOSGraphics == TargetIOSGraphics.Automatic) ||
                         (PlayerSettings.targetIOSGraphics == TargetIOSGraphics.Metal))
                     {
@@ -46,6 +47,7 @@ namespace Vuforia.EditorClasses
                                              "player settings, Vuforia does not support the Metal graphics API yet.");
                         }
                     }
+#endif
 #endif
 
 #if INCLUDE_IL2CPP
